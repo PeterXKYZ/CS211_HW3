@@ -234,9 +234,8 @@ void vc_print(vote_count_t vc)
     for (int i = 0; i < MAX_CANDIDATES &&
         vc_helper->candidate != NULL; ++i) {
         
-        fprintf(stdout,"%-20s %9d\n", vc_helper->candidate, vc_helper->count);
+        fprintf(stdout,"%-20s %9ld\n", vc_helper->candidate, vc_helper->count);
         ++vc_helper;
-    }
-    
+    }    
 }
 

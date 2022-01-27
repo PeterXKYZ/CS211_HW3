@@ -72,15 +72,70 @@ static void test_2_candidates(void)
     vc_destroy(vc);
 }
 
-//
-// You need more tests here.
-//
+static void test_min_max(void) {
+    vote_count_t vc = vc_create();
+    CHECK( vc != NULL );
+    if (vc == NULL) {
+        // Can't keep testing if vc is NULL
+        return;
+    }
+
+    size_t* cp = vc_update(vc, "alice");
+    CHECK( cp );
+
+    cp = vc_update(vc, "bob");
+    *cp = 21;
+
+    cp = vc_update(vc, "joe");
+    *cp = 10;
+
+    cp = vc_update(vc, "dylan");
+    *cp = 21;
+
+    cp = vc_update(vc, "hank");
+    *cp = 10;
+
+    cp = vc_update(vc, "nut");
+
+    CHECK_SIZE( vc_lookup(vc, "alice"), 0);
+    CHECK_SIZE( vc_lookup(vc, "hank"), 10 );
+    CHECK_STRING( vc_max(vc), "bob" );
+    CHECK_STRING( vc_min(vc), "hank" );
+    CHECK_SIZE( vc_total(vc), 62);
+    vc_destroy(vc);
+}
+
+static void test_lookup(void) {
+    vote_count_t vc = vc_create();
+    CHECK( vc != NULL );
+    if (vc == NULL) {
+        // Can't keep testing if vc is NULL
+        return;
+    }
+
+    size_t* cp;
+    
+    CHECK_SIZE( vc_lookup(vc, "dill"), 0);
+    vc_update(vc, "janus");
+    CHECK_SIZE( vc_lookup(vc, "dill"), 0);
+    cp = vc_update(vc, "dill ");
+    CHECK( cp );
+    (*cp)++;
+    
+    CHECK_SIZE( vc_lookup(vc, "dill"), 0);
+    CHECK_SIZE( vc_lookup(vc, "dill "), 1);
+    
+    
+    vc_destroy(vc);
+}
 
 int main(void)
 {
     test_create_destroy();
     test_2_candidates();
     test_creation();
+    test_min_max();
+    test_lookup();
     return 0;
 }
 
