@@ -23,6 +23,8 @@ int main(int argc, char* argv[])
             if(count==NULL){
                 dropped++;
                 fprintf(stderr, DROP_MESSAGE, argv[0], line);
+                free(line);
+                continue;
             }
             (*count)++;
             free(line);
