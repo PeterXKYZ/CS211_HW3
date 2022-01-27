@@ -10,7 +10,7 @@
 
 int main(int argc, char* argv[])
 {
-    int dropped = 0;
+    size_t dropped = 0;
     vote_count_t start = vc_create();
     if(start==NULL){
         fprintf(stderr,OOM_MESSAGE, argv[0]);
@@ -24,7 +24,8 @@ int main(int argc, char* argv[])
                 dropped++;
                 fprintf(stderr, DROP_MESSAGE, argv[0], line);
             }
-            *count ++;
+            (*count)++;
+            free(line);
         }
         vc_print(start);
         vc_destroy(start);
